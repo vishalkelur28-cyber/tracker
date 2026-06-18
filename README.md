@@ -6,6 +6,9 @@ monitoring, escalation management, and handoff to Customer Success.
 Built as a portfolio project to demonstrate domain understanding of the 
 Falcon platform before applying for the Provisioning Engineer role.
 
+<img width="1902" height="903" alt="Tracker" src="https://github.com/user-attachments/assets/075fabe0-babf-4d86-99f4-86ee8c6cd387" />
+<img width="1910" height="698" alt="Tracker 1" src="https://github.com/user-attachments/assets/c356b61e-5df8-4c5e-bea0-28183da15805" />
+
 
 # Falcon Provisioning Tracker
 
