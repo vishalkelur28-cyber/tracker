@@ -1,3 +1,12 @@
+A Provisioning Engineer at CrowdStrike doesn't just activate licenses — 
+they own the entire customer journey from contract signature to first 
+detection. This tool models that workflow: SLA tracking, sensor health 
+monitoring, escalation management, and handoff to Customer Success.
+
+Built as a portfolio project to demonstrate domain understanding of the 
+Falcon platform before applying for the Provisioning Engineer role.
+
+
 # Falcon Provisioning Tracker
 
 A full-featured customer onboarding and provisioning dashboard built with React, Tailwind CSS, and Recharts. Designed to reflect the real operational workflows a Provisioning Engineer runs when onboarding enterprise customers onto the CrowdStrike Falcon platform.
