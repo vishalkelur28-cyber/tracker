@@ -602,101 +602,114 @@ export default function App() {
 
       {/* ── Header ── */}
       <header className="border-b border-slate-800 bg-slate-900/95 backdrop-blur sticky top-0 z-20">
-        <div className="max-w-screen-2xl mx-auto px-6 py-3 flex items-center gap-5 justify-between">
-          {/* brand + nav */}
-          <div className="flex items-center gap-5 shrink-0">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center shadow-lg shadow-red-900/50">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-white font-semibold text-sm tracking-widest">CROWDSTRIKE</span>
-                  <span className="text-[10px] px-1.5 py-0.5 bg-red-900/50 border border-red-700/50 text-red-400 rounded font-mono tracking-wider">PROVISIONING</span>
-                </div>
-                <p className="text-[10px] text-slate-500 mt-0.5">Customer Provisioning Tracker</p>
-              </div>
+        {/* Row 1: brand / nav / actions */}
+        <div className="max-w-screen-2xl mx-auto px-4 py-2.5 flex items-center gap-3">
+          {/* brand */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            <div className="w-7 h-7 bg-red-600 rounded flex items-center justify-center shadow-lg shadow-red-900/50">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             </div>
-            <div className="flex items-center gap-1 bg-slate-800/60 border border-slate-700/50 rounded-lg p-1">
-              {[["dashboard","Dashboard"],["analytics","Analytics"]].map(([p,l]) => (
-                <button key={p} onClick={() => setPage(p)}
-                  className={`px-3 py-1 text-xs rounded font-medium transition-colors ${page === p ? "bg-slate-700 text-white" : "text-slate-400 hover:text-slate-200"}`}>
-                  {l}
-                </button>
-              ))}
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-white font-semibold text-sm tracking-widest">CROWDSTRIKE</span>
+                <span className="text-[10px] px-1.5 py-0.5 bg-red-900/50 border border-red-700/50 text-red-400 rounded font-mono tracking-wider">PROVISIONING</span>
+              </div>
+              <p className="text-[10px] text-slate-500">Customer Provisioning Tracker</p>
             </div>
           </div>
 
+          {/* page nav */}
+          <div className="flex items-center gap-1 bg-slate-800/60 border border-slate-700/50 rounded-lg p-1 shrink-0">
+            {[["dashboard","Dashboard"],["analytics","Analytics"]].map(([p,l]) => (
+              <button key={p} onClick={() => setPage(p)}
+                className={`px-3 py-1 text-xs rounded font-medium transition-colors ${page === p ? "bg-slate-700 text-white" : "text-slate-400 hover:text-slate-200"}`}>
+                {l}
+              </button>
+            ))}
+          </div>
+
+          {/* spacer */}
+          <div className="flex-1" />
+
+          {/* SLA breach pill */}
+          {atRisk.length > 0 && (
+            <span className="flex items-center gap-1.5 px-2.5 py-1 bg-red-950/60 border border-red-700/50 rounded-full text-xs text-red-300 animate-pulse shrink-0">
+              <span className="w-1.5 h-1.5 bg-red-400 rounded-full" />
+              {atRisk.length} SLA breach{atRisk.length !== 1 ? "es" : ""}
+            </span>
+          )}
+
+          {/* notifications */}
+          <NotificationCenter
+            notifications={notifications} unreadCount={unreadCount}
+            isRead={isRead} markAllRead={markAllRead} markRead={markRead}
+            onNavigate={id => { setSelected(id); setActiveTab("checklist"); setPage("dashboard"); }}
+          />
+
+          {/* action buttons */}
+          <button onClick={handleSync} disabled={loading}
+            className="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg transition-colors flex items-center gap-1.5 disabled:opacity-50 shrink-0">
+            {loading ? <span className="w-3 h-3 border border-slate-500 border-t-slate-300 rounded-full animate-spin" /> : "↻"} Sync
+          </button>
+          <button onClick={() => setShowWorkload(p => !p)}
+            className={`px-3 py-1.5 text-xs rounded-lg border transition-colors shrink-0 ${showWorkload ? "bg-indigo-900/40 border-indigo-600/50 text-indigo-300" : "bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200"}`}>
+            Workload
+          </button>
+          <button onClick={() => exportCSV()}
+            className="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg transition-colors shrink-0">
+            ↓ CSV
+          </button>
+          <button onClick={() => setShowShortcuts(p => !p)}
+            className="w-7 h-7 flex items-center justify-center text-xs bg-slate-800 border border-slate-700 text-slate-500 rounded-lg hover:text-slate-300 transition-colors shrink-0">?</button>
+
+          <div className="w-px h-5 bg-slate-700/80 shrink-0" />
+          <div className="flex flex-col items-end shrink-0">
+            <span className="text-xs text-slate-300 bg-slate-800 px-2.5 py-1 rounded border border-slate-700">{currentEngineer}</span>
+            <span className="text-[10px] text-slate-600 mt-0.5">Provisioning Engineer</span>
+          </div>
+        </div>
+
+        {/* Row 2: donut + legend + fleet KPIs */}
+        <div className="max-w-screen-2xl mx-auto px-4 pb-2.5 flex items-center gap-6 border-t border-slate-800/60">
           {/* donut */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 shrink-0 pt-2">
             <div className="relative shrink-0">
-              <DonutChart segments={donutSegments} size={72} thickness={10} />
+              <DonutChart segments={donutSegments} size={60} thickness={9} />
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="text-center">
                   <div className="text-white font-bold text-sm leading-none">{stats.total}</div>
-                  <div className="text-slate-500 text-[10px] mt-0.5">tenants</div>
+                  <div className="text-slate-500 text-[9px] mt-0.5">tenants</div>
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+            <div className="grid grid-cols-2 gap-x-5 gap-y-0.5">
               {donutSegments.map(s => (
-                <div key={s.label} className="flex items-center gap-1.5">
+                <div key={s.label} className="flex items-center gap-1.5 whitespace-nowrap">
                   <span className="w-2 h-2 rounded-full shrink-0" style={{ background: s.color }} />
                   <span className="text-xs text-slate-400">{s.label}</span>
-                  <span className="text-xs font-bold ml-auto pl-1 tabular-nums" style={{ color: s.color }}>{s.value}</span>
+                  <span className="text-xs font-bold tabular-nums ml-1" style={{ color: s.color }}>{s.value}</span>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* divider */}
+          <div className="w-px h-8 bg-slate-700/60 shrink-0" />
+
           {/* fleet KPIs */}
-          <div className="hidden xl:flex items-center gap-0 bg-slate-800/60 border border-slate-700/50 rounded-xl divide-x divide-slate-700/50">
+          <div className="flex items-center gap-0 divide-x divide-slate-700/50">
             {[
-              { label: "Coverage",     value: `${fleetCoverage}%`,              color: fleetCoverage >= 90 ? "#34d399" : "#facc15" },
-              { label: "Total Seats",  value: fmtNum(stats.totalSeats),         color: "#94a3b8" },
-              { label: "Deployed",     value: fmtNum(stats.deployed),           color: "#60a5fa" },
-              { label: "Avg TTP",      value: avgTTP ? `${avgTTP}d` : "N/A",   color: "#a78bfa" },
-              { label: "Escalations",  value: effectiveCustomers.reduce((a,c)=>a+c.escalations.filter(e=>e.status==="Open").length,0), color: "#f87171" },
+              { label: "Fleet Coverage",  value: `${fleetCoverage}%`,            color: fleetCoverage >= 90 ? "#34d399" : "#facc15" },
+              { label: "Total Seats",     value: fmtNum(stats.totalSeats),       color: "#94a3b8" },
+              { label: "Deployed",        value: fmtNum(stats.deployed),         color: "#60a5fa" },
+              { label: "Avg TTP",         value: avgTTP ? `${avgTTP}d` : "N/A", color: "#a78bfa" },
+              { label: "Open Escalations",value: effectiveCustomers.reduce((a,c)=>a+c.escalations.filter(e=>e.status==="Open").length,0), color: "#f87171" },
             ].map(kpi => (
-              <div key={kpi.label} className="flex flex-col items-center px-3 py-1.5">
+              <div key={kpi.label} className="flex flex-col items-center px-4 first:pl-0">
                 <span className="text-sm font-bold tabular-nums leading-none" style={{ color: kpi.color }}>{kpi.value}</span>
                 <span className="text-[10px] text-slate-500 mt-0.5 whitespace-nowrap">{kpi.label}</span>
               </div>
             ))}
-          </div>
-
-          {/* actions */}
-          <div className="flex items-center gap-2 shrink-0">
-            {atRisk.length > 0 && (
-              <span className="flex items-center gap-1.5 px-2.5 py-1 bg-red-950/60 border border-red-700/50 rounded-full text-xs text-red-300 animate-pulse">
-                <span className="w-1.5 h-1.5 bg-red-400 rounded-full" />
-                {atRisk.length} SLA breach{atRisk.length !== 1 ? "es" : ""}
-              </span>
-            )}
-            <NotificationCenter
-              notifications={notifications} unreadCount={unreadCount}
-              isRead={isRead} markAllRead={markAllRead} markRead={markRead}
-              onNavigate={id => { setSelected(id); setActiveTab("checklist"); setPage("dashboard"); }}
-            />
-            <button onClick={handleSync} disabled={loading}
-              className="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg transition-colors flex items-center gap-1.5 disabled:opacity-50">
-              {loading ? <span className="w-3 h-3 border border-slate-500 border-t-slate-300 rounded-full animate-spin" /> : "↻"} Sync
-            </button>
-            <button onClick={() => setShowWorkload(p => !p)}
-              className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${showWorkload ? "bg-indigo-900/40 border-indigo-600/50 text-indigo-300" : "bg-slate-800 border-slate-700 text-slate-400 hover:text-slate-200"}`}>
-              Workload
-            </button>
-            <button onClick={() => exportCSV()}
-              className="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg transition-colors">
-              ↓ CSV
-            </button>
-            <button onClick={() => setShowShortcuts(p => !p)}
-              className="w-7 h-7 flex items-center justify-center text-xs bg-slate-800 border border-slate-700 text-slate-500 rounded-lg hover:text-slate-300 transition-colors">?</button>
-            <div className="w-px h-5 bg-slate-700/80" />
-            <div className="flex flex-col items-end">
-              <span className="text-xs text-slate-300 bg-slate-800 px-2.5 py-1 rounded border border-slate-700">{currentEngineer}</span>
-              <span className="text-[10px] text-slate-600 mt-0.5">Provisioning Engineer</span>
-            </div>
           </div>
         </div>
       </header>
