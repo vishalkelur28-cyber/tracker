@@ -6,6 +6,8 @@ monitoring, escalation management, and handoff to Customer Success.
 Built as a portfolio project to demonstrate domain understanding of the 
 Falcon platform before applying for the Provisioning Engineer role.
 
+## Screenshots
+
 <img width="1902" height="903" alt="Tracker" src="https://github.com/user-attachments/assets/075fabe0-babf-4d86-99f4-86ee8c6cd387" />
 <img width="1910" height="698" alt="Tracker 1" src="https://github.com/user-attachments/assets/c356b61e-5df8-4c5e-bea0-28183da15805" />
 
@@ -20,11 +22,11 @@ A full-featured customer onboarding and provisioning dashboard built with React,
 
 ## Live Demo
 
-[View on Vercel](https://falcon-provisioning-tracker.vercel.app)
+[View on Vercel](https://tracker-mocha-chi.vercel.app/)
 
 ---
 
-## Screenshots
+
 
 > Add a screenshot here after deploying. A 1280x800 browser capture of the main dashboard works well.
 
@@ -198,4 +200,4 @@ vite.config.js
 
 ## Author
 
-Built by [Your Name](https://github.com/vishalkelur28-cyber) as a portfolio project for a Provisioning Engineer application.
+Built by [Vishal Kelur](https://github.com/vishalkelur28-cyber) as a portfolio project for a Provisioning Engineer application.
